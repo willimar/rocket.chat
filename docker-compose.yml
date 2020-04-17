@@ -9,8 +9,8 @@ services:
     environment:
       - PORT=3000
       - ROOT_URL=http://35.168.242.57:3000
-      - MONGO_URL=mongodb://admin:iAyY9J@52.21.19.69:27017/rocketchat?authSource=admin 
-      - MONGO_OPLOG_URL=mongodb+srv://rocket:!rocket201@cluster0-clsb1.mongodb.net/local 
+      - MONGO_URL=mongodb://admin:iAyY9J@52.21.19.69:27017/iclipsChat?authSource=admin 
+      - MONGO_OPLOG_URL=mongodb+srv://iclips:!mongo201@cluster0-weoqv.mongodb.net/local 
       - MAIL_URL=smtp://smtp.email
 #       - HTTP_PROXY=http://proxy.domain.com
 #       - HTTPS_PROXY=http://proxy.domain.com
@@ -25,10 +25,10 @@ services:
     image: rocketchat/hubot-rocketchat:latest
     restart: unless-stopped
     environment:
-      - ROCKETCHAT_URL=rocketchat:3000
+      - ROCKETCHAT_URL=http://35.168.242.57:3000
       - ROCKETCHAT_ROOM=GENERAL
-      - ROCKETCHAT_USER=bot
-      - ROCKETCHAT_PASSWORD=botpassword
+      - ROCKETCHAT_USER=bender
+      - ROCKETCHAT_PASSWORD=!bender201
       - BOT_NAME=bot
   # you can add more scripts as you'd like here, they need to be installable by npm
       - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
