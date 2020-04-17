@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  rocketchat:
+    image: rocketchat/rocket.chat:latest
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+    environment:
+      - PORT=3000
+      - ROOT_URL=http://35.168.242.57:3000
+      - MONGO_URL=mongodb://admin:iAyY9J@52.21.19.69:27017/rocketchat?authSource=admin 
+      - MONGO_OPLOG_URL=mongodb+srv://rocket:!rocket201@cluster0-clsb1.mongodb.net/local 
+      - MAIL_URL=smtp://smtp.email
+#       - HTTP_PROXY=http://proxy.domain.com
+#       - HTTPS_PROXY=http://proxy.domain.com
+    ports:
+      - 3000:3000
+    labels:
+      - "traefik.backend=rocketchat"
+      - "traefik.frontend.rule=Host: your.domain.tld"
+
+  # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
+  hubot:
+    image: rocketchat/hubot-rocketchat:latest
+    restart: unless-stopped
+    environment:
+      - ROCKETCHAT_URL=rocketchat:3000
+      - ROCKETCHAT_ROOM=GENERAL
+      - ROCKETCHAT_USER=bot
+      - ROCKETCHAT_PASSWORD=botpassword
+      - BOT_NAME=bot
+  # you can add more scripts as you'd like here, they need to be installable by npm
+      - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
+    depends_on:
+      - rocketchat
+    labels:
+      - "traefik.enable=false"
+    volumes:
+      - ./scripts:/home/hubot/scripts
+  # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
+    ports:
+      - 3001:8080
